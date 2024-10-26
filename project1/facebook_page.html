@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ... (previous head content remains unchanged) ... -->
+</head>
+<body>
+    <!-- ... (previous body content remains unchanged) ... -->
+
+    <script>
+        let timer;
+        let timeLeft = 0;
+        let audio;
+
+        // ... (previous code remains unchanged) ...
+
+        function startTimer() {
+            if (timer) clearInterval(timer);
+            
+            const hours = parseInt(document.getElementById('hours').value) || 0;
+            const minutes = parseInt(document.getElementById('minutes').value) || 0;
+            const seconds = parseInt(document.getElementById('seconds').value) || 0;
+            
+            timeLeft = hours * 3600 + minutes * 60 + seconds;
+            
+            timer = setInterval(updateTimer, 1000);
+
+            // Schedule a notification
+            scheduleNotification(timeLeft * 1000); // Convert seconds to milliseconds
+        }
+
+        // ... (other functions remain unchanged) ...
+
+        function updateTimer() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                updateTimerDisplay();
+            } else {
+                clearInterval(timer);
+                playFIFAWorldCupSound();
+                alert("Time's up!");
+                redirectToTimerPage();
+            }
+        }
+
+        // ... (other functions remain unchanged) ...
+
+        function playFIFAWorldCupSound() {
+            if (!audio) {
+                audio = new Audio('audio/fifa_worldcup.mp3');
+            }
+            audio.play();
+            
+            // Stop the audio after 10 seconds
+            setTimeout(() => {
+                audio.pause();
+                audio.currentTime = 0;
+            }, 10000);
+        }
+
+        function scheduleNotification(delay) {
+            Notification.requestPermission().then(function(permission) {
+                if (permission === 'granted') {
+                    if ('serviceWorker' in navigator && 'Notification' in window) {
+                        const now = Date.now();
+                        const scheduledTime = new Date(now + delay);
+
+                        navigator.serviceWorker.ready.then(function(registration) {
+                            registration.showNotification('Facebook Timer', {
+                                body: "Time's up! Click to return to the timer page.",
+                                icon: 'path/to/icon.png',
+                                tag: 'facebook-timer',
+                                showTrigger: new TimestampTrigger(scheduledTime),
+                                data: { url: window.location.href } // Store the current URL
+                            });
+                        });
+                    }
+                }
+            });
+        }
+
+        function redirectToTimerPage() {
+            // Redirect to the timer page (assuming it's index.html)
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

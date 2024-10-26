@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Timer - AapAlarm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #2a2a2a;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+            text-align: center;
+        }
+        h1 {
+            color: #ff0000;
+            margin-bottom: 1rem;
+        }
+        .timer {
+            font-size: 3rem;
+            margin: 2rem 0;
+            color: #ffffff;
+        }
+        input[type="number"] {
+            background-color: #3a3a3a;
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 0.5rem;
+            margin: 0.5rem;
+            width: 60px;
+        }
+        button {
+            background-color: #ff0000;
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+            padding: 0.5rem 1rem;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #cc0000;
+        }
+        a {
+            color: #ff0000;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Timer</h1>
+        <div class="timer" id="timer">00:00:00</div>
+        <div>
+            <input type="number" id="hours" min="0" max="23" placeholder="HH">
+            <input type="number" id="minutes" min="0" max="59" placeholder="MM">
+            <input type="number" id="seconds" min="0" max="59" placeholder="SS">
+        </div>
+        <div>
+            <button onclick="startTimer()">Start</button>
+            <button onclick="stopTimer()">Stop</button>
+            <button onclick="resetTimer()">Reset</button>
+        </div>
+        <a href="index.html">Back to Home</a>
+    </div>
+
+    <script>
+        let timer;
+        let timeLeft = 0;
+        let audio;
+
+        function startTimer() {
+            if (timer) clearInterval(timer);
+            
+            const hours = parseInt(document.getElementById('hours').value) || 0;
+            const minutes = parseInt(document.getElementById('minutes').value) || 0;
+            const seconds = parseInt(document.getElementById('seconds').value) || 0;
+            
+            timeLeft = hours * 3600 + minutes * 60 + seconds;
+            
+            timer = setInterval(updateTimer, 1000);
+
+            // Schedule a notification
+            scheduleNotification(timeLeft * 1000); // Convert seconds to milliseconds
+        }
+
+        function stopTimer() {
+            clearInterval(timer);
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            timeLeft = 0;
+            updateTimerDisplay();
+        }
+
+        function updateTimer() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                updateTimerDisplay();
+            } else {
+                clearInterval(timer);
+                playFIFAWorldCupSound();
+                alert("Time's up!");
+                redirectToTimerPage();
+            }
+        }
+
+        function updateTimerDisplay() {
+            const hours = Math.floor(timeLeft / 3600);
+            const minutes = Math.floor((timeLeft % 3600) / 60);
+            const seconds = timeLeft % 60;
+            
+            document.getElementById('timer').textContent = 
+                `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+        }
+
+        function padZero(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        function scheduleNotification(delay) {
+            Notification.requestPermission().then(function(permission) {
+                if (permission === 'granted') {
+                    if ('serviceWorker' in navigator && 'Notification' in window) {
+                        const now = Date.now();
+                        const scheduledTime = new Date(now + delay);
+
+                        navigator.serviceWorker.ready.then(function(registration) {
+                            registration.showNotification('YouTube Timer', {
+                                body: "Time's up! Click to return to the timer page.",
+                                icon: 'path/to/icon.png',
+                                tag: 'youtube-timer',
+                                showTrigger: new TimestampTrigger(scheduledTime),
+                                data: { url: window.location.href } // Store the current URL
+                            });
+                        });
+                    }
+                }
+            });
+        }
+
+        function redirectToTimerPage() {
+            // Redirect to the timer page (assuming it's index.html)
+            window.location.href = 'index.html';
+
+            // If the page is not visible, send a message to the service worker
+            if (document.visibilityState !== 'visible') {
+                navigator.serviceWorker.controller.postMessage({
+                    action: 'redirectToTimer',
+                    url: 'index.html'
+                });
+            }
+        }
+    </script>
+</body>
+</html>

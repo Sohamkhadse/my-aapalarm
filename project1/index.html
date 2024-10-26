@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AapAlarm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #1b7b82;
+            --text-color: #2c3e50;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --youtube-red: #FF0000;
+            --instagram-purple: #C13584;
+            --facebook-blue: #3b5998;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--background-color), #e0e6ed);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .animated-title {
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .social-sections {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 50px;
+        }
+
+        .social-section {
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 6px var(--shadow-color);
+        }
+
+        .social-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 8px var(--shadow-color);
+        }
+
+        .social-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .social-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 8px var(--shadow-color);
+        }
+
+        .social-button:focus {
+            outline: none;
+        }
+
+        .youtube-button:focus {
+            box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.3);
+        }
+
+        .instagram-button:focus {
+            box-shadow: 0 0 0 3px rgba(193, 53, 132, 0.3);
+        }
+
+        .facebook-button:focus {
+            box-shadow: 0 0 0 3px rgba(59, 89, 152, 0.3);
+        }
+
+        .social-icon {
+            width: 60px;
+            height: 60px;
+        }
+
+        .social-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 10px;
+            color: var(--secondary-color);
+        }
+
+        .user-input {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #userInput {
+            padding: 12px 16px;
+            font-size: 1rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 25px;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+            width: 250px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+
+        #userInput:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        #userInput::placeholder {
+            color: rgba(44, 62, 80, 0.6);
+        }
+
+        .submit-button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .submit-button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .submit-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .social-sections {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .animated-title {
+                font-size: 2.5rem;
+            }
+
+            #userInput {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        #errorMessage {
+            color: red;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .butterfly-container {
+            position: relative;
+            height: 100px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .butterfly {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #8a2be2;
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+
+        .butterfly::before,
+        .butterfly::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30px;
+            height: 30px;
+            border-radius: 50% 50% 0 50%;
+            background-color: #8a2be2;
+        }
+
+        .butterfly::before {
+            left: -15px;
+            transform: rotate(-45deg);
+            animation: leftWing 0.8s ease-in-out infinite alternate;
+        }
+
+        .butterfly::after {
+            right: -15px;
+            transform: rotate(45deg);
+            animation: rightWing 0.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes leftWing {
+            from { transform: rotate(-45deg); }
+            to { transform: rotate(-90deg); }
+        }
+
+        @keyframes rightWing {
+            from { transform: rotate(45deg); }
+            to { transform: rotate(90deg); }
+        }
+
+        @keyframes fly {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(100px, -50px) rotate(10deg); }
+            50% { transform: translate(200px, 0) rotate(0deg); }
+            75% { transform: translate(100px, 50px) rotate(-10deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        .butterfly:nth-child(1) { animation: fly 10s infinite; top: 20%; left: 10%; }
+        .butterfly:nth-child(2) { animation: fly 12s infinite 1s; top: 50%; left: 20%; }
+        .butterfly:nth-child(3) { animation: fly 11s infinite 2s; top: 30%; left: 50%; }
+        .butterfly:nth-child(4) { animation: fly 13s infinite 3s; top: 70%; left: 70%; }
+
+        .butterfly-horse {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: url('https://example.com/horse-silhouette.png') no-repeat center center;
+            background-size: 40px;
+        }
+
+        .butterfly-horse::before,
+        .butterfly-horse::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 30px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50% 50% 0 50%;
+        }
+
+        .butterfly-horse::before {
+            left: -15px;
+            transform-origin: right center;
+            animation: leftWing 0.8s ease-in-out infinite alternate;
+        }
+
+        .butterfly-horse::after {
+            right: -15px;
+            transform-origin: left center;
+            animation: rightWing 0.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes leftWing {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(-60deg); }
+        }
+
+        @keyframes rightWing {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(60deg); }
+        }
+
+        .butterfly-horse:nth-child(1) { top: 20%; left: 10%; animation: fly 15s infinite; }
+        .butterfly-horse:nth-child(2) { top: 50%; left: 30%; animation: fly 18s infinite 2s; }
+        .butterfly-horse:nth-child(3) { top: 30%; left: 60%; animation: fly 20s infinite 4s; }
+
+        @keyframes fly {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(100px, -50px) rotate(10deg); }
+            50% { transform: translate(200px, 0) rotate(0deg); }
+            75% { transform: translate(100px, 50px) rotate(-10deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="animated-title">AapAlarm</h1>
+        
+        <div class="butterfly-container">
+            <div class="butterfly"></div>
+            <div class="butterfly"></div>
+            <div class="butterfly"></div>
+            <div class="butterfly"></div>
+        </div>
+
+        <div class="social-sections">
+            <div class="social-section">
+                <a href="youtube_page.html" class="social-button youtube-button">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube" class="social-icon">
+                </a>
+                <p class="social-name">YOUTUBE</p>
+            </div>
+            <div class="social-section">
+                <a href="instagram_page.html" class="social-button instagram-button">
+                    <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram" class="social-icon">
+                </a>
+                <p class="social-name">INSTAGRAM</p>
+            </div>
+            <div class="social-section">
+                <a href="facebook_page.html" class="social-button facebook-button">
+                    <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook" class="social-icon">
+                </a>
+                <p class="social-name">FACEBOOK</p>
+            </div>
+        </div>
+
+        <div id="root"></div>
+
+        <div class="user-input">
+            <input type="text" id="userInput" placeholder="Type YouTube, Instagram, or Facebook">
+            <button class="submit-button" onclick="redirectToSocialMedia()">Submit</button>
+        </div>
+        <p id="errorMessage">Please enter a valid social media name (YouTube, Instagram, or Facebook).</p>
+    </div>
+    
+    <!-- React and ReactDOM CDN -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    
+    <!-- Babel for JSX transformation -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    
+    <!-- Your React component -->
+    <script type="text/babel" src="js/App.js"></script>
+
+    <script>
+        function redirectToSocialMedia() {
+            const input = document.getElementById('userInput');
+            const errorMessage = document.getElementById('errorMessage');
+            const socialMedia = input.value.trim().toLowerCase();
+
+            switch (socialMedia) {
+                case 'youtube':
+                    window.location.href = 'youtube_page.html';
+                    break;
+                case 'instagram':
+                    window.location.href = 'instagram_page.html';
+                    break;
+                case 'facebook':
+                    window.location.href = 'facebook_page.html';
+                    break;
+                default:
+                    errorMessage.style.display = 'block';
+                    setTimeout(() => {
+                        errorMessage.style.display = 'none';
+                    }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
