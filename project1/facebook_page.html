@@ -1,10 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- ... (previous head content remains unchanged) ... -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Timer - AapAlarm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.35/build/spline-viewer.js"></script>
+    <style>
+        /* Same styles as YouTube page, but with Facebook colors */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        .container {
+            background-color: rgba(42, 42, 42, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        h1 {
+            color: #4267B2;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(66, 103, 178, 0.5);
+        }
+        /* ... (same styles as YouTube page) ... */
+        button {
+            background-color: #4267B2;
+            /* ... (rest of button styles) ... */
+        }
+        button:hover {
+            background-color: #365899;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(66, 103, 178, 0.3);
+        }
+        a {
+            color: #4267B2;
+            /* ... (rest of link styles) ... */
+        }
+        /* ... (rest of styles same as YouTube page) ... */
+    </style>
 </head>
 <body>
-    <!-- ... (previous body content remains unchanged) ... -->
+    <!-- Royal Crown 3D Scene -->
+    <spline-viewer url="https://prod.spline.design/QWBi-7A5pZ47h0OY/scene.splinecode"></spline-viewer>
+
+    <div class="container">
+        <h1>Facebook Timer</h1>
+        <!-- ... (rest of HTML same as YouTube page) ... -->
+    </div>
 
     <script>
         let timer;
